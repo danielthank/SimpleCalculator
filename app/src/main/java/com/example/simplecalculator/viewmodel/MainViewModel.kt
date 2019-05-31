@@ -34,6 +34,7 @@ class MainViewModel : ViewModel(), DataObserver<String> {
             R.id.btn_mul -> calculator.multiply()
             R.id.btn_div -> calculator.divide()
             R.id.btn_equal -> calculator.calculate()
+            R.id.btn_dot -> calculator.appendDot()
         }
     }
 }

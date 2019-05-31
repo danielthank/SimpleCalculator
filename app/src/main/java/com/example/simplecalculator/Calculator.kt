@@ -10,6 +10,8 @@ class Calculator(private val dataObserver: DataObserver<String>? = null) {
 
     private var value1 = 0.0
 
+    private var dotAfter = 1.0
+
     var displayText: String = value1.toString()
         private set(value) {
             field = value
@@ -43,18 +45,33 @@ class Calculator(private val dataObserver: DataObserver<String>? = null) {
     private fun setOperation(operation: Operation) {
         if (isValue1Set) {
             this.operation = operation
+            // clear dotAfter after setting operation
+            dotAfter = 1.0
             value1 = 0.0
         }
     }
 
+    fun appendDot() {
+        dotAfter *= 0.1
+    }
+
     fun appendDigit(value: Int) {
-        this.value1 = this.value1 * 10 + value
+        if (dotAfter < 1) {
+            // there is dot before
+            this.value1 += dotAfter * value
+            dotAfter *= 0.1
+        } else {
+            // no dot before
+            this.value1 = this.value1 * 10 + value
+        }
         isValue1Set = true
         displayText = value1.toString()
     }
 
     fun reset() {
         value1 = 0.0
+        // clear dotAfter after pressing AC
+        dotAfter = 1.0
         operation = Operation.None
         isValue1Set = false
         displayText = value1.toString()
